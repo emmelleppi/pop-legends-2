@@ -37,3 +37,7 @@ body {
     #050523 100%
   );
 }
+
+canvas {
+  background-color: #ea7bbe;
+}
