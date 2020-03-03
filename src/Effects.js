@@ -43,8 +43,8 @@ export default function Effects() {
   return (
       <effectComposer ref={composer} args={[gl]}>
           <renderPass attachArray="passes" scene={scene} camera={camera} />
-          <waterPass attachArray="passes" factor={0.2} />
-          {/* <unrealBloomPass attachArray="passes" args={[aspect, 1, 0.3, 0.9]} /> */}
+          <waterPass attachArray="passes" factor={0.15} />
+          <unrealBloomPass attachArray="passes" args={[aspect, 0.3, 1, 0.9]} />
           {/* <glitchPass attachArray="passes" factor={0.5} /> */}
           <outlinePass ref={outline} attachArray="passes" args={[aspect, scene, camera]} />
           <filmPass attachArray="passes" args={[0.05, 0.4, 1500, false]} />
