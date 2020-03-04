@@ -132,9 +132,9 @@ function ShapeText(props) {
     function eachFrame({ clock }) {
       if (ref.current && mouse.current) {
         if (deviceRotation.current) {
-          ref.current.position.x = lerp(ref.current.position.x, deviceRotation.current[0] / 10, 0.1)
-          ref.current.rotation.x = lerp(ref.current.rotation.x, deviceRotation.current[1] / 100, 0.1)
-          ref.current.rotation.y = lerp(ref.current.rotation.y, deviceRotation.current[0] / 100, 0.1)
+          ref.current.position.x = lerp(ref.current.position.x, deviceRotation.current[1] / 10, 0.1)
+          ref.current.rotation.x = lerp(ref.current.rotation.x, deviceRotation.current[0] / 100, 0.1)
+          ref.current.rotation.y = lerp(ref.current.rotation.y, deviceRotation.current[1] / 100, 0.1)
           ref.current.rotation.z = Math.sin(clock.getElapsedTime()) * 0.3
         } else {
           ref.current.position.x = lerp(ref.current.position.x, mouse.current[0] / 100, 0.1)
