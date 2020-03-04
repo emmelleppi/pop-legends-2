@@ -8200,10 +8200,10 @@ react-spring@^8.0.27:
     "@babel/runtime" "^7.3.1"
     prop-types "^15.5.8"
 
-react-three-fiber@4.0.16:
-  version "4.0.16"
-  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-4.0.16.tgz#8d806b687aa5aab031aaa51ae1ae1ba6410c3030"
-  integrity sha512-nkOfNBCA76P+Xtw1vaTRggR0djgfcpKCHLM1fSATJxbKLLtapCTjlsFadByrt7+EnKeHHvYUfdkCD1WtNnuk1A==
+react-three-fiber@4.0.19:
+  version "4.0.19"
+  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-4.0.19.tgz#b266267df489152f1b4cc11607f8634d152cf633"
+  integrity sha512-D3cMG6KrsyE9Oj+t0yoQpAMGSxkGOChoBjS9vmZjg32DUZ6NxRAXxVkEULutcBuFSLWek0ye8z+MUeiDwdqYAg==
   dependencies:
     "@babel/runtime" "^7.7.7"
     "@juggle/resize-observer" "^3.0.2"
@@ -9413,10 +9413,10 @@ text-table@0.2.0, text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-three@0.113.2:
-  version "0.113.2"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.113.2.tgz#04791d491fe4359330f9dbe7b767db18bfb35d67"
-  integrity sha512-x3vrKW41/UtbWbWduWKGlfIc043SvHWr3YltehYq+UGb9YglQ2oztNGvl2eut05JtNSmP11Mh3t6Xak5/0e+Fg==
+three@0.114.0:
+  version "0.114.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.114.0.tgz#754d08467a950ddeef06a0c645a1302b130e455a"
+  integrity sha512-3av45FxJeqYm7Rl02dfGBoqTaf2a934oUB4zMNrN8xjmASoSGeeykYoAr35+UntTdJDY/STw6CY3KuXFBWETig==
 
 threejs-meshline@^2.0.9:
   version "2.0.9"
