@@ -44,7 +44,7 @@ function Dom(props) {
         <ScrollArea ref={scrollArea} onScroll={onScroll} onMouseMove={onMouseMove}>
             {isMobile && !clicked && (
               <ButtonWrapper>
-                <Button onClick={grantDeviceMotion} >CLICCAMI<br/>PLS :(</Button>
+                <Button onClick={grantDeviceMotion} >CLICCAMI<br/>:)</Button>
               </ButtonWrapper>
             )}
             <Void mult={VH_MULT - 1} />
@@ -78,7 +78,11 @@ const ImageWrapper = styled.div`
 `
 
 const ButtonWrapper = styled(ImageWrapper)`
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,6 +90,9 @@ const ButtonWrapper = styled(ImageWrapper)`
   background: rgba(255, 255, 255, 0.7);
 `
 const Button = styled.button`
+  padding: 0;
+  margin: 0;
+  padding-top: 1rem;
   background: cornsilk;
   width: 10rem;
   height: 10rem;
@@ -93,7 +100,8 @@ const Button = styled.button`
   border: 0.5rem solid pink;
   color: pink;
   font-size: 1.5rem;
-  font-weight: 900;
+  font-weight: bolder;
+  text-align: center;
 `
 
 const Img = styled.img`
