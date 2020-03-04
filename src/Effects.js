@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import React, { useRef, useMemo, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { extend, useThree, useFrame } from 'react-three-fiber'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
@@ -7,54 +7,58 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { GlitchPass } from './post/Glitchpass'
 import { WaterPass } from './post/Waterpass'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
-import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
 import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass'
 
-import useStore from "./store"
+import { useOutline, useAspect, useScrollMax, scroll } from "./store"
 
-extend({ FilmPass, EffectComposer, ShaderPass, RenderPass, WaterPass,SSAOPass, UnrealBloomPass, FilmPass, GlitchPass, OutlinePass })
+const GLITCH_SCROLL_THRESHOLD = 0.95
+const OUTLINE_COLOR = 0xf8f0f9
 
-export default function Effects() {
-  const objs = useStore(state => state.objs)
+extend({ FilmPass, EffectComposer, ShaderPass, RenderPass, WaterPass,SSAOPass, UnrealBloomPass, GlitchPass, OutlinePass })
+
+function Effects() {
+  const objs = useOutline(state => state.objs)
 
   const composer = useRef()
   const outline = useRef()
+  const glitch = useRef()
+  
+  const { scene, gl, camera } = useThree()
 
-  const { scene, gl, size, camera } = useThree()
-  const aspect = useMemo(() => new THREE.Vector2(size.width, size.height), [size])
+  const aspect = useAspect(state => state.aspect)
+  const scrollMax = useScrollMax(state => state.scrollMax)
 
-  useEffect(() => void composer.current.setSize(size.width, size.height), [size])
+  useEffect(() => void composer.current.setSize(aspect.width, aspect.height), [aspect])
 
   useEffect(() => { 
     if (outline.current) {
       outline.current.edgeStrength = 10
       outline.current.edgeGlow = 0
       outline.current.edgeThickness = 2
-      outline.current.visibleEdgeColor = new THREE.Color(0xf8f0f9)
-      outline.current.hiddenEdgeColor = new THREE.Color(0xf8f0f9)
+      outline.current.visibleEdgeColor = new THREE.Color(OUTLINE_COLOR)
+      outline.current.hiddenEdgeColor = new THREE.Color(OUTLINE_COLOR)
       outline.current.selectedObjects = objs
     }
-  }, [objs, outline.current])
+  }, [objs, outline])
 
-  useFrame(() => composer.current.render(), 1)
+  useFrame(() => {
+    composer.current.render()
+    glitch.current.factor = scroll.current / scrollMax > GLITCH_SCROLL_THRESHOLD ? 0.9 : 0
+  }, 1)
+
 
   return (
       <effectComposer ref={composer} args={[gl]}>
           <renderPass attachArray="passes" scene={scene} camera={camera} />
           <waterPass attachArray="passes" factor={0.15} />
+          <glitchPass ref={glitch} attachArray="passes" factor={0} />
           <unrealBloomPass attachArray="passes" args={[aspect, 0.3, 1, 0.9]} />
-          {/* <glitchPass attachArray="passes" factor={0.5} /> */}
           <outlinePass ref={outline} attachArray="passes" args={[aspect, scene, camera]} />
-          <filmPass attachArray="passes" args={[0.05, 0.4, 1500, false]} />
-          {/* <sSAOPass attachArray="passes" args={[scene, camera]} kernelRadius={0.6} maxDistance={0.03} />
-          <shaderPass
-            attachArray="passes"
-            args={[FXAAShader]}
-            material-uniforms-resolution-value={[1 / size.width, 1 / size.height]}
-            renderToScreen
-          /> */}
+          <filmPass attachArray="passes" args={[0.025, 0.4, 1500, false]} />
       </effectComposer>
   )
 }
+
+export default Effects

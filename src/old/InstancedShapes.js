@@ -1,10 +1,10 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame } from "react-three-fiber";
 import * as THREE from "three";
-import niceColors from 'nice-color-palettes'
+
+import { COLORS } from "../store"
 
 const CUBE_NUM = 200
-const COLORS = niceColors[10]
 
 const _object = new THREE.Object3D();
 const _color = new THREE.Color();

@@ -3,9 +3,16 @@ import React, { useEffect } from 'react'
 import { useUpdate } from 'react-three-fiber'
 import { a } from 'react-spring/three'
 
-import useStore from "./store"
+import { useOutline } from "./store"
 
-function Text({ config, children, size = 1, alphaColor = 0.5, opacity, position, color }) {
+
+function Text(props) {
+
+  const { position, config, children, size = 1, diffuseColor, specularColor, specularShininess } = props
+
+  const addObj = useOutline(state => state.addObj)
+  const removeObj = useOutline(state => state.removeObj)
+  
   const mesh = useUpdate(
     self => {
       const size = new THREE.Vector3()
@@ -17,37 +24,27 @@ function Text({ config, children, size = 1, alphaColor = 0.5, opacity, position,
     [children]
   )
 
-  const addObj = useStore(state => state.addObj)
-  const removeObj = useStore(state => state.removeObj)
-  
   useEffect(() => {
       if (mesh.current) {
-          addObj(mesh.current)
+          const temp = mesh.current
+          addObj(temp)
           
-          return () => removeObj(mesh.current)
+          return () => removeObj(temp)
       }
-  },[addObj, mesh.current])
+  }, [addObj, removeObj, mesh])
   
-  const specularColor = new THREE.Color( 0.2, 0.2, 0.2 );
-  const specularShininess = Math.pow( 2, alphaColor * 10 );
-
   return (
-      <group position={position} scale={[0.1 * size, 0.1 * size, 0.1]}>
-        <mesh ref={mesh} dispose={null} >
-          <textGeometry attach="geometry" args={[children, config]} />
-          <a.meshToonMaterial
-              attach="material"
-              map={null}
-              bumpMap={null}
-              bumpScale={1}
-              color={color}
-              specular={specularColor}
-              shininess={specularShininess}
-              opacity={opacity}
-              transparent
-          />
-        </mesh>
-      </group>
+    <group position={position} scale={[0.1 * size, 0.1 * size, 0.1]}>
+      <mesh ref={mesh} dispose={null} >
+        <textGeometry attach="geometry" args={[children, config]} />
+        <a.meshToonMaterial
+            attach="material"
+            color={diffuseColor}
+            specular={specularColor}
+            shininess={specularShininess}
+        />
+      </mesh>
+    </group>
   )
 }
 
