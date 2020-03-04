@@ -6,6 +6,7 @@ import { VH_MULT, scroll, mouse, rotation } from "./store"
 function Dom(props) {
     const { isMobile } = props
     const [clicked, setClicked] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
     const scrollArea = useRef()
 
     const onScroll = e => { scroll.current = e.target.scrollTop }
@@ -40,12 +41,24 @@ function Dom(props) {
       }
     }, [isMobile, onRotation, setClicked])
 
+    useEffect(() => {
+      const f = () => setScrolled(true)
+      scrollArea.current.addEventListener("scroll", f)
+
+      return () => scrollArea.current.removeEventListener("scroll", f)
+    }, [setScrolled])
+
     return (
         <ScrollArea ref={scrollArea} onScroll={onScroll} onMouseMove={onMouseMove}>
             {isMobile && !clicked && (
               <ButtonWrapper>
                 <Button onClick={grantDeviceMotion} >CLICCAMI<br/>:)</Button>
               </ButtonWrapper>
+            )}
+            {!scrolled && (
+              <Scrolla>
+                <div>Scrolla zio</div>
+              </Scrolla>
             )}
             <Void mult={VH_MULT - 1} />
             <ImageWrapper>
@@ -103,7 +116,40 @@ const Button = styled.button`
   font-weight: bolder;
   text-align: center;
 `
+const Scrolla = styled.div`
+  position: fixed;
+  width: 100vw;
+  bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  z-index: 9;
 
+  font-size: 1.5rem;
+  font-weight: bolder;
+  text-transform: uppercase;
+  color: white;
+
+  animation:  bounceIn 2s ease-in-out 0s infinite;
+  @-webkit-keyframes bounceIn {
+    0% {
+      bottom: 2rem;
+    }
+    100% {
+      bottom: 4rem;
+    }
+  }
+  @keyframes bounceIn {
+    0% {
+      bottom: 2rem;
+    }
+    50% {
+      bottom: 4rem;
+    }
+    100% {
+      bottom: 2rem;
+    }
+  }
+`
 const Img = styled.img`
   width: 75vw;
   border-radius: 50%;
