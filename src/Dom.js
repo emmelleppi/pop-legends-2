@@ -17,17 +17,28 @@ function Dom() {
       function onRotation(event) {
         rotation.current = [event.rotationRate.alpha, event.rotationRate.beta,event.rotationRate.gamma]
       },
-      [rotation.current]
+      []
     )
 
     useEffect(() => {
-      if(isMobile && window.DeviceMotionEvent){
-        window.addEventListener('devicemotion', onRotation);
-        return () => window.removeEventListener('devicemotion', onRotation);
-      }else{
-        console.log("DeviceMotionEvent is not supported");
+      if(isMobile){
+
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+
+          DeviceMotionEvent.requestPermission()
+            .then(permissionState => {
+              if (permissionState === 'granted') {
+                window.addEventListener('devicemotion', onRotation);
+                return () => window.removeEventListener('devicemotion', onRotation);
+              } else {
+                console.log("DeviceMotionEvent is not supported");
+              }
+            })
+            .catch(console.error);
+        }
+
       }
-    }, [isMobile])
+    }, [isMobile, onRotation])
 
     return (
         <ScrollArea ref={scrollArea} onScroll={onScroll} onMouseMove={onMouseMove}>
