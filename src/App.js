@@ -36,7 +36,7 @@ function App() {
           <CameraEfx />
       </Canvas>
 
-      <Dom />
+      <Dom isMobile={isMobile} />
     </>
   );
 }

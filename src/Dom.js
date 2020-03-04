@@ -1,17 +1,17 @@
-import React, { useEffect, useCallback, useRef } from "react"
+import React, { useEffect, useCallback, useRef, useState } from "react"
 import styled from "styled-components"
 
 import { VH_MULT, scroll, mouse, rotation } from "./store"
 
-function Dom() {
+function Dom(props) {
+    const { isMobile } = props
+    const [clicked, setClicked] = useState(false)
     const scrollArea = useRef()
 
     const onScroll = e => { scroll.current = e.target.scrollTop }
     useEffect(() => void onScroll({ target: scrollArea.current }), [])
   
     const onMouseMove = useCallback(({ clientX: x, clientY: y }) => (mouse.current = [x - window.innerWidth / 2, y - window.innerHeight / 2]), [])
-
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
     const onRotation = useCallback(
       function onRotation(event) {
@@ -20,7 +20,8 @@ function Dom() {
       []
     )
 
-    useEffect(() => {
+    const grantDeviceMotion = useCallback(() => {
+      setClicked(true)
       if(isMobile){
 
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -29,7 +30,6 @@ function Dom() {
             .then(permissionState => {
               if (permissionState === 'granted') {
                 window.addEventListener('devicemotion', onRotation);
-                return () => window.removeEventListener('devicemotion', onRotation);
               } else {
                 console.log("DeviceMotionEvent is not supported");
               }
@@ -38,13 +38,18 @@ function Dom() {
         }
 
       }
-    }, [isMobile, onRotation])
+    }, [isMobile, onRotation, setClicked])
 
     return (
         <ScrollArea ref={scrollArea} onScroll={onScroll} onMouseMove={onMouseMove}>
+            {isMobile && !clicked && (
+              <ButtonWrapper>
+                <Button onClick={grantDeviceMotion} >CLICCAMI<br/>PLS :(</Button>
+              </ButtonWrapper>
+            )}
             <Void mult={VH_MULT - 1} />
             <ImageWrapper>
-            <Img src="/Rei.jpg" alt="REI CULO"/>
+              <Img src="/Rei.jpg" alt="REI CULO"/>
             </ImageWrapper>
         </ScrollArea>
     )
@@ -70,6 +75,25 @@ const ImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+const ButtonWrapper = styled(ImageWrapper)`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9;
+  background: rgba(255, 255, 255, 0.7);
+`
+const Button = styled.button`
+  background: cornsilk;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  border: 0.5rem solid pink;
+  color: pink;
+  font-size: 1.5rem;
+  font-weight: 900;
 `
 
 const Img = styled.img`
