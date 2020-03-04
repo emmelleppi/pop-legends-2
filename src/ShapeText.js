@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect, useMemo, useCallback } from "react"
-import { useFrame, useLoader } from "react-three-fiber"
+import { useFrame } from "react-three-fiber"
 import lerp from 'lerp'
 import { a, config, useSpring } from 'react-spring/three'
 import * as THREE from 'three'
 
 import Text from "./Text"
-import { mouse, useAspect } from "./store"
+import { mouse, useAspect, useFontLoader } from "./store"
 
 function TEXT_DATA(width){ 
   const responsiveCorrection = getResponsiveCorrection(width)
@@ -47,7 +47,7 @@ function TEXT_DATA(width){
         },
         {
           id: 4,
-          children: "MEZZAGO",
+          children: "DI MEZZAGO",
           size: 1 * responsiveCorrection,
           position: [0 * responsiveCorrection , -4 * responsiveCorrection, 0]
         },
@@ -76,7 +76,7 @@ function TEXT_DATA(width){
 
 function getResponsiveCorrection(width) {
   if (width <= 425) {
-    return 0.6
+    return 0.7
   }
   if (width <= 768) {
     return 0.8
@@ -113,18 +113,18 @@ function Shape(props) {
 }
 
 function ShapeText(props) {
-  const { position } = props
+  const { position, font } = props
   
   const ref = useRef()
   
   const [index, setIndex] = useState(0)
 
   const aspect = useAspect(state => state.aspect)
+  
   const textData = useMemo(() => TEXT_DATA(aspect.width), [aspect.width]) 
 
-  const font = useLoader(THREE.FontLoader, '/Fredoka.json')
   const fontConfig = useMemo(
-    () => ({ font, size: 40, height: 30, curveSegments: 32, bevelEnabled: true, bevelThickness: 2, bevelSize: 2, bevelOffset: 0, bevelSegments: 8 }),
+    () => ({ font, size: 40, height: 10, curveSegments: 4, bevelEnabled: true, bevelThickness: 2, bevelSize: 2, bevelOffset: 0, bevelSegments: 8 }),
     [font]
   )
   
@@ -141,7 +141,7 @@ function ShapeText(props) {
   )
   useFrame(eachFrame)
 
-  useEffect(() => void setInterval(() => setIndex(i => (i + 1) % textData.length), 4000), [])
+  useEffect(() => void setInterval(() => setIndex(i => (i + 1) % textData.length), 4000), [textData.length])
 
   return (
     <group ref={ref} position={position} >
@@ -150,4 +150,10 @@ function ShapeText(props) {
   )
 }
 
-export default ShapeText
+function _ShapeText(props) {
+  const font = useFontLoader(state => state.fontLoader)
+
+  return font ? <ShapeText {...props} font={font} /> : null
+}
+
+export default _ShapeText

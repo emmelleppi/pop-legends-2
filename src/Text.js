@@ -35,7 +35,7 @@ function Text(props) {
   
   return (
     <group position={position} scale={[0.1 * size, 0.1 * size, 0.1]}>
-      <mesh ref={mesh} dispose={null} >
+      <mesh ref={mesh} >
         <textGeometry attach="geometry" args={[children, config]} />
         <a.meshToonMaterial
             attach="material"

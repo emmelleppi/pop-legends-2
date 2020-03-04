@@ -1,7 +1,7 @@
+import { createRef } from 'react';
 import create from 'zustand'
 import niceColors from 'nice-color-palettes'
 import * as THREE from "three";
-import { createRef } from 'react';
 
 export const [useOutline] = create(set => ({
   objs: [],
@@ -17,6 +17,11 @@ export const [useAspect] = create(set => ({
 export const [useScrollMax] = create(set => ({
   scrollMax: 0,
   setScrollMax: val => set({ scrollMax: val }),
+}))
+
+export const [useFontLoader] = create(set => ({
+  fontLoader: null,
+  setFontLoader: val => set({ fontLoader: val }),
 }))
 
 export const scroll = createRef()

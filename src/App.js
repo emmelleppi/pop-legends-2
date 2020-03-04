@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Canvas } from "react-three-fiber";
 import * as THREE from "three";
 
@@ -26,11 +26,9 @@ function App() {
           <ambientLight intensity={0.9} />
           <pointLight position={[0, 0, 0]} intensity={0.1} />
           
-          <Suspense fallback={null}>
-            <ShapeText position={[0, 0, -40]}/>
-            <FancyShapes position={[0, 0, -100]} />
-            <FatLines count={25} radius={120} position={[0, 0, -100]} />
-          </Suspense>
+          <ShapeText position={[0, 0, -40]}/>
+          <FancyShapes position={[0, 0, -100]} />
+          <FatLines count={25} radius={120} position={[0, 0, -100]} />
           
           <StoreInit />
           <Background />
