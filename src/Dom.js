@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useRef } from "react"
 import styled from "styled-components"
 
-import { VH_MULT, scroll, mouse } from "./store"
+import { VH_MULT, scroll, mouse, rotation } from "./store"
 
 function Dom() {
     const scrollArea = useRef()
@@ -10,6 +10,24 @@ function Dom() {
     useEffect(() => void onScroll({ target: scrollArea.current }), [])
   
     const onMouseMove = useCallback(({ clientX: x, clientY: y }) => (mouse.current = [x - window.innerWidth / 2, y - window.innerHeight / 2]), [])
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+    const onRotation = useCallback(
+      function onRotation(event) {
+        rotation.current = [event.rotationRate.alpha, event.rotationRate.beta,event.rotationRate.gamma]
+      },
+      [rotation.current]
+    )
+
+    useEffect(() => {
+      if(isMobile && window.DeviceMotionEvent){
+        window.addEventListener('devicemotion', onRotation);
+        return () => window.removeEventListener('devicemotion', onRotation);
+      }else{
+        console.log("DeviceMotionEvent is not supported");
+      }
+    }, [isMobile])
 
     return (
         <ScrollArea ref={scrollArea} onScroll={onScroll} onMouseMove={onMouseMove}>
@@ -46,7 +64,7 @@ const ImageWrapper = styled.div`
 const Img = styled.img`
   width: 75vw;
   border-radius: 50%;
-
+  border: .5rem solid white;
   @media screen and (min-width: 426px) {
     width: 50vw;
   }

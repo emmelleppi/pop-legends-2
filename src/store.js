@@ -26,6 +26,7 @@ export const [useFontLoader] = create(set => ({
 
 export const scroll = createRef()
 export const mouse = createRef([0, 0])
+export const rotation = createRef(null)
 
 export const COLORS = niceColors[1]
 export const VH_MULT = 30

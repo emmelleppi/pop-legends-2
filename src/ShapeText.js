@@ -5,7 +5,7 @@ import { a, config, useSpring } from 'react-spring/three'
 import * as THREE from 'three'
 
 import Text from "./Text"
-import { mouse, useAspect, useFontLoader } from "./store"
+import { mouse, useAspect, useFontLoader, rotation as deviceRotation } from "./store"
 
 function TEXT_DATA(width){ 
   const responsiveCorrection = getResponsiveCorrection(width)
@@ -131,10 +131,17 @@ function ShapeText(props) {
   const eachFrame = useCallback(
     function eachFrame({ clock }) {
       if (ref.current && mouse.current) {
-        ref.current.position.x = lerp(ref.current.position.x, mouse.current[0] / 100, 0.1)
-        ref.current.rotation.x = lerp(ref.current.rotation.x, mouse.current[1] / 1000, 0.1)
-        ref.current.rotation.y = lerp(ref.current.rotation.y, mouse.current[0] / 1000, 0.1)
-        ref.current.rotation.z = Math.sin(clock.getElapsedTime()) * 0.3
+        if (deviceRotation.current) {
+          ref.current.position.x = lerp(ref.current.position.x, deviceRotation.current[0] / 100, 0.1)
+          ref.current.rotation.x = lerp(ref.current.rotation.x, deviceRotation.current[1] / 1000, 0.1)
+          ref.current.rotation.y = lerp(ref.current.rotation.y, deviceRotation.current[0] / 1000, 0.1)
+          ref.current.rotation.z = Math.sin(clock.getElapsedTime()) * 0.3
+        } else {
+          ref.current.position.x = lerp(ref.current.position.x, mouse.current[0] / 100, 0.1)
+          ref.current.rotation.x = lerp(ref.current.rotation.x, mouse.current[1] / 1000, 0.1)
+          ref.current.rotation.y = lerp(ref.current.rotation.y, mouse.current[0] / 1000, 0.1)
+          ref.current.rotation.z = Math.sin(clock.getElapsedTime()) * 0.3
+        }
       }
     },
     [ref]
