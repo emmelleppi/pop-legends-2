@@ -1,5 +1,7 @@
 import React, { useEffect, useCallback, useRef, useState } from "react"
 import styled from "styled-components"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebookSquare, faInstagram } from '@fortawesome/free-brands-svg-icons'
 
 import { VH_MULT, scroll, mouse, rotation } from "./store"
 
@@ -52,14 +54,24 @@ function Dom(props) {
         <ScrollArea ref={scrollArea} onScroll={onScroll} onMouseMove={onMouseMove}>
             {isMobile && !clicked && (
               <ButtonWrapper>
-                <Button onClick={grantDeviceMotion} >CLICCAMI<br/>:)</Button>
+                <Button onClick={grantDeviceMotion} >CLICCAMI<br/>👆🏼</Button>
               </ButtonWrapper>
             )}
             {!scrolled && (
               <Scrolla>
-                <div>Scrolla zio</div>
+                <div>Scrolla</div>
               </Scrolla>
             )}
+            <IconsWrapper>
+            {[
+              { id: 0, link: "https://www.facebook.com/events/s/2103-pop-legends-2-al-bloom-me/204630327319993/", icon: faFacebookSquare },
+              { id: 1, link: "https://www.instagram.com/poplegends2/", icon: faInstagram },
+            ].map(({ id, link, icon }) => (
+              <Icon key={id} href={link} target="_blank">
+                <FontAwesomeIcon size="2x" icon={icon} />
+              </Icon>
+            ))}
+            </IconsWrapper>
             <Void mult={VH_MULT - 1} />
             <ImageWrapper>
               <Img src="/Rei.jpg" alt="REI CULO"/>
@@ -67,7 +79,6 @@ function Dom(props) {
         </ScrollArea>
     )
 }
-
 
 const ScrollArea = styled.div`
   position: absolute;
@@ -110,11 +121,12 @@ const Button = styled.button`
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
-  border: 0.5rem solid pink;
-  color: pink;
+  border: 0.5rem solid #ea7bbe;
+  color: #ea7bbe;
   font-size: 1.5rem;
   font-weight: bolder;
   text-align: center;
+  font-family: 'Fredoka One', cursive;
 `
 const Scrolla = styled.div`
   position: fixed;
@@ -124,7 +136,7 @@ const Scrolla = styled.div`
   justify-content: center;
   z-index: 9;
 
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bolder;
   text-transform: uppercase;
   color: white;
@@ -160,6 +172,25 @@ const Img = styled.img`
 
   @media screen and (min-width: 769px) {
     width: 30rem;
+  }
+`
+
+const IconsWrapper = styled.div`
+  position: fixed;
+  top: 1rem;
+  right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Icon = styled.a`
+  color: white;
+  margin: 0 0.5rem;
+  cursor: pointer;
+
+  :hover {
+    transform: scale(1.2);
   }
 `
 

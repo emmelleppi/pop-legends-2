@@ -37,6 +37,18 @@ function TEXT_DATA(width){
     },
     {
       id: 1,
+      alphaColor: 0.4,
+      shapes:[
+        {
+          id: 3,
+          children: "NEXT GIG",
+          size: 1 * responsiveCorrection,
+          position: [0 * responsiveCorrection , 0 * responsiveCorrection, 0]
+        },
+      ]
+    },
+    {
+      id: 2,
       alphaColor: 0.45,
       shapes:[
         {
@@ -54,7 +66,7 @@ function TEXT_DATA(width){
       ]
     },
     {
-      id: 2,
+      id: 3,
       alphaColor: 0.5,
       shapes:[
         {
